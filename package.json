@@ -1,0 +1,36 @@
+{
+  "name": "itnonstop-frontend",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Nikodem Szatkowski & Bartosz Matosiuk",
+  "license": "none",
+  "scripts": {
+    "dev": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --port=3000 --hot --inline --history-api-fallback",
+    "deploy": "node ./node_modules/webpack/bin/webpack"
+  },
+  "devDependencies": {
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "eslint": "^3.13.1",
+    "eslint-config-airbnb": "^14.0.0",
+    "eslint-import-resolver-webpack": "^0.8.3",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^3.0.2",
+    "eslint-plugin-react": "^6.10.3",
+    "file-loader": "^0.9.0",
+    "http-proxy-middleware": "^0.17.4",
+    "react-hot-loader": "^1.3.1",
+    "react-router": "^3.0.2",
+    "underscore": "^1.8.3",
+    "webpack": "^1.14.0",
+    "webpack-dev-server": "^1.16.2"
+  },
+  "dependencies": {
+    "react": "^15.4.2",
+    "react-bootstrap": "^0.31.3",
+    "react-dom": "^15.4.2",
+    "react-router": "^3.2.0"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "env": {
+    "browser": true
+  },
+  "extends": "airbnb",
+  "plugins": [
+    "react",
+    "jsx-a11y",
+    "import",
+  ],
+  "settings": {
+    "import/resolver": "webpack"
+  },
+  "rules": {
+    "arrow-body-style": ["warn"],
+    "no-script-url": ["warn"],
+    "new-parens": ["off"],
+    "no-param-reassign": ["warn"],
+    "no-func-assign": ["warn"],
+    "linebreak-style": ["off"],
+    "comma-dangle": ["error", { "functions": "never", "objects": "only-multiline", "exports": "only-multiline", "imports": "only-multiline", "arrays": "only-multiline" }],
+    "no-underscore-dangle": ["off"],
+    "no-multi-spaces": ["off"],
+    "no-unused-expressions": ["error", { "allowTernary" : true }],
+    "class-methods-use-this": ["warn"],
+    "no-prototype-builtins": ["warn"],
+    "no-console": ["off"],
+    "default-case": ["off"],
+    "max-len": ["error", 200],
+    "no-mixed-operators": ["error", { "allowSamePrecedence": true }],
+    "prefer-arrow-callback": ["off"],
+    "func-names": ["off"],
+    "jsx-a11y/no-static-element-interactions" : ["warn"],
+    "react/jsx-filename-extension": ["warn", { "extensions": [".js", ".jsx"] }],
+    "react/no-did-mount-set-state": ["warn"],
+    "react/prop-types": ["error"],
+    "react/jsx-key": ["error"],
+    "import/no-unresolved": ["error"],
+    "import/extensions": ["off"],
+    "import/no-extraneous-dependencies": ["off"],
+    "object-shorthand": ["warn"],
+  }
+}
