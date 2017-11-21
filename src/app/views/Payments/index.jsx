@@ -3,11 +3,12 @@ import _ from 'underscore';
 import getPayments from 'services/payments-service';
 import { getAccount } from 'services/accounts-service';
 import { Table, ProgressBar } from 'react-bootstrap';
+import { Link } from 'react-router';
 
 const renderRow = function (rowData, key) {
   return (
     <tr key={key}>
-      <td>{rowData.paymentId}</td>
+      <td><Link to={`/payment/${rowData.paymentId}/details`}>{rowData.paymentId}</Link></td>
       <td>{rowData.paymentType}</td>
       <td style={{ textAlign: 'right' }}>${rowData.amount.toFixed(2)}</td>
       <td>{rowData.fromAccount}</td>
@@ -67,7 +68,14 @@ export default class Payments extends Component {
 
   render() {
     const { payments, progress, progressLabel } = this.state;
-    if (!payments.length) return (<ProgressBar now={progress} label={`${progressLabel} - total progress ${progress}%`} />);
+    if (!payments.length) {
+      return (
+        <ProgressBar
+          now={progress}
+          label={`${progressLabel} - total progress ${progress}%`}
+        />
+      );
+    }
     return (
       <Table responsive>
         <thead>
