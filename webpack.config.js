@@ -11,7 +11,7 @@ const output = {
 const config = {
   context: path.join(__dirname, './src'),
   entry: {
-    javascript: 'app.js',
+    javascript: ['babel-polyfill', 'app.js'],
     html: 'index.html',
   },
   output,

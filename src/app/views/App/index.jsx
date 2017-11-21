@@ -19,7 +19,7 @@ export default class App extends Component {
     _.bindAll(this, '_onSelect', '_renderItem');
   }
 
-  componentWillMount(nextProps) {
+  componentWillMount() {
     const active = _.findIndex(this.state.items, i => `/${i.href}` === location.pathname);
     if (active) this.setState({ active });
   }
