@@ -4,7 +4,6 @@ import { Jumbotron } from 'react-bootstrap';
 export default class Home extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       test: true,
     };

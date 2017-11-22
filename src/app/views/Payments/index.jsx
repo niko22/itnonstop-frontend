@@ -2,23 +2,8 @@ import React, { Component } from 'react';
 import _ from 'underscore';
 import getPayments from 'services/payments-service';
 import { getAccount } from 'services/accounts-service';
-import { Table, ProgressBar } from 'react-bootstrap';
+import { Table, ProgressBar, DropdownButton, MenuItem } from 'react-bootstrap';
 import { Link } from 'react-router';
-
-const renderRow = function (rowData, key) {
-  return (
-    <tr key={key}>
-      <td><Link to={`/payment/${rowData.paymentId}/details`}>{rowData.paymentId}</Link></td>
-      <td>{rowData.paymentType}</td>
-      <td style={{ textAlign: 'right' }}>${rowData.amount.toFixed(2)}</td>
-      <td>{rowData.fromAccount}</td>
-      <td>{rowData.toAccount}</td>
-      <td>{rowData.description}</td>
-      <td>{rowData.beneficiaryBankName}</td>
-      <td>{rowData.beneficiaryAddress}</td>
-    </tr>
-  );
-};
 
 export default class Payments extends Component {
   constructor(props) {
@@ -28,7 +13,11 @@ export default class Payments extends Component {
       progress: 0,
       progressLabel: 'Loading',
       payments: [],
+      asyncStyle: 'callbacks'
     };
+
+    this.onAsyncStyleSelect = this.onAsyncStyleSelect.bind(this)
+    this.renderRow = this.renderRow.bind(this);
   }
 
   componentWillMount() {
@@ -65,6 +54,26 @@ export default class Payments extends Component {
     });
   }
 
+  onAsyncStyleSelect(eventKey, event) {
+    this.setState({
+      'asyncStyle': eventKey
+    });
+  }
+
+  renderRow(rowData, key) {
+    return (
+      <tr key={key}>
+        <td><Link to={`/payment/${rowData.paymentId}/details/${this.state.asyncStyle}`}>{rowData.paymentId}</Link></td>
+        <td>{rowData.paymentType}</td>
+        <td style={{ textAlign: 'right' }}>${rowData.amount.toFixed(2)}</td>
+        <td>{rowData.fromAccount}</td>
+        <td>{rowData.toAccount}</td>
+        <td>{rowData.description}</td>
+        <td>{rowData.beneficiaryBankName}</td>
+        <td>{rowData.beneficiaryAddress}</td>
+      </tr>
+    );
+  };
 
   render() {
     const { payments, progress, progressLabel } = this.state;
@@ -77,23 +86,32 @@ export default class Payments extends Component {
       );
     }
     return (
-      <Table responsive>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Type</th>
-            <th>Amount</th>
-            <th>From</th>
-            <th>To</th>
-            <th>Description</th>
-            <th>Bank name</th>
-            <th>Bank address</th>
-          </tr>
-        </thead>
-        <tbody>
-          {payments.map(renderRow)}
-        </tbody>
-      </Table>
+      <div>
+        <span>Async style: </span>
+        <DropdownButton bsStyle="primary" title={this.state.asyncStyle} key={1} id="asyncStyleDropdown" onSelect={this.onAsyncStyleSelect}>
+          <MenuItem eventKey="callbacks">callbacks</MenuItem>
+          <MenuItem eventKey="promises">promises</MenuItem>
+          <MenuItem eventKey="async-await">async-await</MenuItem>
+        </DropdownButton><br /><br/>
+
+        <Table responsive>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Type</th>
+              <th>Amount</th>
+              <th>From</th>
+              <th>To</th>
+              <th>Description</th>
+              <th>Bank name</th>
+              <th>Bank address</th>
+            </tr>
+          </thead>
+          <tbody>
+            {payments.map(this.renderRow)}
+          </tbody>
+        </Table>
+      </div>
     );
   }
 }
