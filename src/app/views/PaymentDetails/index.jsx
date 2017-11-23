@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import _ from 'underscore';
 import { Grid, Col, Row, Panel } from 'react-bootstrap';
+import { getPayment } from 'services/payments';
 
 export default class PaymentDetails extends Component {
   constructor(props) {
@@ -9,88 +11,34 @@ export default class PaymentDetails extends Component {
       progress: 0,
       progressLabel: 'Loading',
       payments: [],
+      data: {
+        'paymentTypeDetails': {},
+        'fromAccountsDetails': {},
+        'toAccountDetails': {},
+        'chargeAccountDetails': {},
+        'paymentMetaData': {},
+        'fromAccountDeals': []
+      }
     };
+
+    _.bindAll(this, 'callback');
+  }
+
+  callback(data) {
+    this.setState({ data });
   }
 
   componentWillMount() {
-    this.setState({
-      data: {
-        "paymentId": 1,
-        "fromAccountId": 1,
-        // Data from details for fromAccountId
-        "fromAccountsDetails": {
-          "accountId": 1,
-          "accountType": "BUSINESS ACCOUNT",
-          "holderName": "Nice fella",
-          "holderAddress": "Cool Ave 12/23",
-          "superAccount": true
-        },
-        // Data from deals for fromAccountId
-        "fromAccountDeals": [
-          {
-            "name": "Deal 1",
-            "description": "This will make you rich",
-            "refLink": "http://localhost/nowhere",
-            "expirationDate": "2017-12-02"
-          },
-          {
-            "name": "Deal 2",
-            "description": "This will make you even richer",
-            "refLink": "http://localhost/nowhere",
-            "expirationDate": "2017-11-23"
-          },
-          {
-            "name": "Deal 3",
-            "description": "This will make you ... ",
-            "refLink": "http://localhost/nowhere",
-            "expirationDate": "2017-12-05"
-          }
-        ],
-        "toAccountId": 4,
-        // Data from details for toAccountId
-        "toAccountDetails": {
-            "accountId": 4,
-            "accountType": "BUSINESS ACCOUNT",
-            "holderName": "Nice fella",
-            "holderAddress": "Cool Ave 12/23",
-            "superAccount": true
-        },
-        "chargeAccountId": 1,
-        // Data from details for chargeAccountId
-        "chargeAccountDetails": {
-          "accountId": 1,
-          "accountType": "BUSINESS ACCOUNT",
-          "holderName": "Nice fella",
-          "holderAddress": "Cool Ave 12/23",
-          "superAccount": true
-        },
-        "paymentType": "INTERNAL",
-        // Data from details for paymentId and paymentType
-        "paymentTypeDetails": {
-          "type": "INTERNAL",
-          "displayName": "Internal payment",
-          "chargeValue": 1.0
-        },
-        "beneficiaryBankName": "MobileBank",
-        "beneficiaryAddress": "Fab Street 16",
-        "amount": 111.23,
-        "description": "Take my money",
-        // Additional payment headers for paymentId and paymentType
-        "paymentMetaData": {
-          "K1": "Value 1 for 1 in DOMESTIC",
-          "K2": "Value 2 for 1 in DOMESTIC",
-          "K3": "Value 3 for 1 in DOMESTIC",
-          "K4": "Value 4 for 1 in DOMESTIC",
-          "K5": "Value 5 for 1 in DOMESTIC",
-          "K6": "Value 6 for 1 in DOMESTIC",
-          "K7": "Value 7 for 1 in DOMESTIC"
-        }
-      }
+    getPayment({
+      paymentId: this.props.params.paymentId,
+      ecmaStandard: 'es7',
+      callback: this.callback
     });
   }
 
   render() {
     const { data } = this.state;
+    console.log(data.paymentId);
     return (
       <Grid>
         <Row className="show-grid">

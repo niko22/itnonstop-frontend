@@ -23,11 +23,13 @@ function es5Get(url, done = () => {}, fail = () => {}, always = () => {}) {
   xmlhttp.send();
 }
 
-function es6Get() {}
-function es7Get() {}
+function es6Get(url) {
+  return new Promise((res, rej) => {
+    es5Get(url, res, rej, res);
+  });
+}
 
 export {
   es5Get,
-  es6Get,
-  es7Get
+  es6Get
 };
