@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'underscore';
-import getPayments from 'services/payments-service';
+import { getPayments } from 'services/payments';
 import { getAccount } from 'services/accounts-service';
 import { Table, ProgressBar } from 'react-bootstrap';
 import { Link } from 'react-router';
@@ -29,39 +29,42 @@ export default class Payments extends Component {
       progressLabel: 'Loading',
       payments: [],
     };
+
+    _.bindAll(this, 'callback');
   }
 
   componentWillMount() {
+    getPayments({ callback: this.callback });
+  }
+
+  callback(payments) {
     const me  = this;
-    getPayments(function (payments) {
-      me.setState({ progress: 50, progressLabel: 'Payments loaded' });
+    me.setState({ progress: 50, progressLabel: 'Payments loaded' });
 
-      let requestCnt = 0;
-      const accounts = [];
-      const accountIds = _.chain(payments)
-        .map(payment => ([payment.chargeAccountId, payment.fromAccountId, payment.toAccountId])).flatten().uniq()
-        .value();
-      const totalCnt = accountIds.length;
-      const progressStep = ((1 / totalCnt) * 50);
+    let requestCnt = 0;
+    const accounts = [];
+    const accountIds = _.chain(payments)
+      .map(payment => ([payment.chargeAccountId, payment.fromAccountId, payment.toAccountId])).flatten().uniq()
+      .value();
+    const totalCnt = accountIds.length;
+    const progressStep = ((1 / totalCnt) * 50);
 
-      accountIds.forEach(function (id) {
-        getAccount(id, function (response) {
-          me.setState({ progress: (me.state.progress + progressStep), progressLabel: 'Loading accounts' }, () => {
-            accounts[response.accountId] = response;
-            requestCnt += 1;
-            if (requestCnt === totalCnt) {
-              me.setState({
-                payments: payments.map(payment => _.extend(payment, {
-                  toAccount: accounts[payment.toAccountId].holderName,
-                  fromAccount: accounts[payment.fromAccountId].holderName,
-                  fromaAccount: accounts[payment.fromAccountId].holderName,
-                }))
-              });
-            }
-          });
+    accountIds.forEach(function (id) {
+      getAccount(id, function (response) {
+        me.setState({ progress: (me.state.progress + progressStep), progressLabel: 'Loading accounts' }, () => {
+          accounts[response.accountId] = response;
+          requestCnt += 1;
+          if (requestCnt === totalCnt) {
+            me.setState({
+              payments: payments.map(payment => _.extend(payment, {
+                toAccount: accounts[payment.toAccountId].holderName,
+                fromAccount: accounts[payment.fromAccountId].holderName,
+                fromaAccount: accounts[payment.fromAccountId].holderName,
+              }))
+            });
+          }
         });
       });
-      //
     });
   }
 
