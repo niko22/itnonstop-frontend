@@ -15,9 +15,14 @@ const getMeta = (paymentId, paymentType) => get(PATH_PAYMENT_META.replace('{paym
 export async function getPayment({ paymentId, callback }) {
   try {
     const details = await getPaymentDetails(paymentId);
-    details.fromAccountsDetails = await getAccountDetails(details.fromAccountId);
-    details.toAccountDetails = await getAccountDetails(details.toAccountId);
-    details.chargeAccountDetails = await getAccountDetails(details.chargeAccountId);
+    const accountDetails = await Promise.all([
+      getAccountDetails(details.fromAccountId),
+      getAccountDetails(details.toAccountId),
+      getAccountDetails(details.chargeAccountId)
+    ]);
+    details.fromAccountsDetails = accountDetails[0];
+    details.toAccountDetails = accountDetails[1];
+    details.chargeAccountDetails = accountDetails[2];
     details.fromAccountDeals = await getDeals(details.fromAccountId);
     details.paymentTypeDetails = await getTypeDetails(details.paymentType);
     details.paymentMetaData = await getMeta(details.paymentId, details.paymentType);
