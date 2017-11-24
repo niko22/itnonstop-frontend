@@ -4,7 +4,16 @@ const defaultGet = ({ url, callback }) => es5Get(url, callback);
 
 const getPayments = defaultGet;
 
-const getPayment = defaultGet;
+const getPayment = ({ paymentId, callback }) => {
+  callback({
+    'paymentTypeDetails': {},
+    'fromAccountsDetails': {},
+    'toAccountDetails': {},
+    'chargeAccountDetails': {},
+    'paymentMetaData': {},
+    'fromAccountDeals': []
+  });
+};
 
 export {
   getPayments,

@@ -1,5 +1,7 @@
 import _ from 'underscore';
 import * as es5payments from 'services/payments/es5';
+import * as es6payments from 'services/payments/promise';
+import * as es7payments from 'services/payments/async-await';
 
 const PATH = 'api/payments';
 
@@ -15,15 +17,13 @@ const getPayment = ({
   paymentId,
   callback = () => {}
 }) => {
-  const url = `${PATH}/${paymentId}`;
-  const paramsObj = { url, callback };
-  let provider;
-  switch (paramsObj) {
-    case 'es5': provider = es5payments; break;
-    // case 'es6': provider = es6payments; break;
-    // case 'es7': provider = es7payments; break;
+  let s;
+  switch (ecmaStandard) {
+    case 'es5': s = es5payments; break;
+    case 'es6': s = es6payments; break;
+    case 'es7': s = es7payments; break;
   }
-  _.partial(provider, paramsObj);
+  s.getPayment({ paymentId, callback });
 };
 
 export {
