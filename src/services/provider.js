@@ -25,7 +25,7 @@ function es5Get(url, done = () => {}, fail = () => {}, always = () => {}) {
 
 function es6Get(url) {
   return new Promise((res, rej) => {
-    es5Get(url, res, rej, res);
+    es5Get(url, res, rej);
   });
 }
 
