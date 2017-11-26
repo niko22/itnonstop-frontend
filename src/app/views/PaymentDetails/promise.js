@@ -7,7 +7,7 @@ const getPaymentDetailsPromise = (paymentId, callback = () => {}) => {
   getPayment(paymentId)
     .then((paymentDetails) => {
       Promise.all([
-        getAccount(paymentDetails.fromAccountId),               // fromAccountsDetails
+        getAccount(paymentDetails.fromAccountId),               // fromAccountDetails
         getAccountDeals(paymentDetails.fromAccountId),          // fromAccountDeals
         getAccount(paymentDetails.fromAccountId),               // toAccountDetails
         getAccount(paymentDetails.fromAccountId),               // chargeAccountDetails
@@ -15,14 +15,14 @@ const getPaymentDetailsPromise = (paymentId, callback = () => {}) => {
         getPaymentMeta(paymentId, paymentDetails.paymentType),  // paymentMetaData
       ])
         .then(([
-          fromAccountsDetails,
+          fromAccountDetails,
           fromAccountDeals,
           toAccountDetails,
           chargeAccountDetails,
           paymentTypeDetails,
           paymentMetaData,
         ]) => callback(_.extend(paymentDetails, {
-          fromAccountsDetails,
+          fromAccountDetails,
           fromAccountDeals,
           toAccountDetails,
           chargeAccountDetails,
