@@ -13,7 +13,7 @@ function es5Get(url, done = () => {}, fail = () => {}, always = () => {}) {
   xmlhttp.onreadystatechange = function onreadystatechange() {
     if (xmlhttp.readyState === XMLHttpRequest.DONE) {
       if (xmlhttp.status === 200) {
-        done(parse2json(xmlhttp.responseText), xmlhttp);
+        done(parse2json(xmlhttp.response), xmlhttp);
       } else {
         fail(xmlhttp.statusText, xmlhttp);
       }
@@ -23,11 +23,17 @@ function es5Get(url, done = () => {}, fail = () => {}, always = () => {}) {
   xmlhttp.send();
 }
 
-function es6Get() {}
-function es7Get() {}
+function promiseGet(url) {
+  return new Promise((resolve, reject) => {
+    const req = new XMLHttpRequest();
+    req.open('GET', url);
+    req.onload = () => (req.status === 200 ? resolve(parse2json(req.response)) : reject(Error(req.statusText)));
+    req.onerror = e => reject(Error(`Network Error: ${e}`));
+    req.send();
+  });
+}
 
 export {
   es5Get,
-  es6Get,
-  es7Get
+  promiseGet
 };

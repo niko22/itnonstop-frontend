@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'underscore';
-import { getPayments } from 'services/payments';
-import { getAccount } from 'services/accounts-service';
+import { getPayments } from 'services/payments/es5';
+import { getAccount } from 'services/accounts/es5';
 import { Table, ProgressBar } from 'react-bootstrap';
 import { Link } from 'react-router';
 
@@ -34,7 +34,7 @@ export default class Payments extends Component {
   }
 
   componentWillMount() {
-    getPayments({ callback: this.callback });
+    getPayments(this.callback);
   }
 
   callback(payments) {
