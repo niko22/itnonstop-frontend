@@ -5,9 +5,9 @@ import { getAccount, getAccountDeals } from 'services/accounts/es5';
 
 const getPaymentDetailsCallback = (paymentId, callback = () => {}) => {
   getPayment(paymentId, (paymentDetails) => {
-    // fromAccountsDetails
-    getAccount(paymentDetails.fromAccountId, (fromAccountsDetails) => {
-      _.extend(paymentDetails, { fromAccountsDetails });
+    // fromAccountDetails
+    getAccount(paymentDetails.fromAccountId, (fromAccountDetails) => {
+      _.extend(paymentDetails, { fromAccountDetails });
 
       // fromAccountDeals
       getAccountDeals(paymentDetails.fromAccountId, (fromAccountDeals) => {
