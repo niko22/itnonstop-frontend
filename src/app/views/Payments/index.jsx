@@ -63,6 +63,7 @@ export default class Payments extends Component {
               }))
             });
           }
+          // console.info(`Render function called ${requestCnt}`);
         });
       });
     });

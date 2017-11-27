@@ -27,10 +27,11 @@ export default class PaymentDetails extends Component {
 
   onSelect(selectedKey) {
     this.setState(({ key }) => (selectedKey !== key ? { key: selectedKey, data: {} } : null), () => {
+      const args = [this.props.params.paymentId, this.callback];
       switch (selectedKey) {
-        case 'callback': getPaymentDetailsCallback(this.props.params.paymentId, this.callback); break;
-        case 'promise': getPaymentDetailsPromise(this.props.params.paymentId, this.callback); break;
-        case 'async-await': getPaymentDetailsAsync(this.props.params.paymentId, this.callback); break;
+        case 'callback': getPaymentDetailsCallback(...args); break;
+        case 'promise': getPaymentDetailsPromise(...args); break;
+        case 'async-await': getPaymentDetailsAsync(...args); break;
       }
     });
   }
