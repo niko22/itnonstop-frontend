@@ -5,6 +5,8 @@ import { Grid, Col, Panel, Row, Tabs, Tab } from 'react-bootstrap';
 import getPaymentDetailsCallback from 'app/views/PaymentDetails/callback';
 import getPaymentDetailsPromise from 'app/views/PaymentDetails/promise';
 import getPaymentDetailsAsync from 'app/views/PaymentDetails/async-await';
+import { getMetaData, getDealsBox } from 'app/views/PaymentDetails/helpers';
+
 
 export default class PaymentDetails extends Component {
   constructor(props) {
@@ -37,35 +39,6 @@ export default class PaymentDetails extends Component {
     this.setState({ data });
   }
 
-  getMetaData(paymentMetaData) {
-    return !_.isEmpty(paymentMetaData) ? (
-      <span>
-        <h3>Meta data</h3>
-        K1: {paymentMetaData.K1 || '-'}<br />
-        K2: {paymentMetaData.K2 || '-'}<br />
-        K3: {paymentMetaData.K3 || '-'}<br />
-        K4: {paymentMetaData.K4 || '-'}<br />
-        K5: {paymentMetaData.K5 || '-'}<br />
-        K6: {paymentMetaData.K6 || '-'}<br />
-        K7: {paymentMetaData.K7 || '-'}<br />
-      </span>
-    ) : null;
-  }
-
-  getDealsBox(name, accountDeals) {
-    return !_.isEmpty(accountDeals) ? (
-      <Panel header="Your super offers" bsStyle="warning">
-        <h3>Hey {name} check out what we have for you</h3><br />
-        {_.map(accountDeals, (o, i) => (
-          <div key={`deals_key_${i}`}>
-            <h4>{o.name}</h4>
-            {o.description}<br />
-            Expiring: {o.expirationDate}<br />
-          </div>
-        ))}
-      </Panel>) : null;
-  }
-
   renderDetails() {
     const { data } = this.state;
     if (_.isEmpty(data)) return (<center className="blink_me">Loading, please wait...</center>);
@@ -94,12 +67,12 @@ export default class PaymentDetails extends Component {
             Address: {data.chargeAccountDetails.holderAddress || '-'}<br />
             Change amount: {data.paymentTypeDetails.chargeValue || 0}<br />
 
-            {this.getMetaData(data.paymentMetaData)}
+            {getMetaData(data.paymentMetaData)}
           </Panel>
         </Col>
 
         <Col md={5}>
-          {this.getDealsBox(data.fromAccountDetails.holderName, data.fromAccountDeals)}
+          {getDealsBox(data.fromAccountDetails.holderName, data.fromAccountDeals)}
         </Col>
       </Row>
     );

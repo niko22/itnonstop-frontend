@@ -9,11 +9,11 @@ const _getAccountDetails = async (fromAccountId, toAccountId, chargeAccountId) =
   getAccount(chargeAccountId)
 ]);
 
-const _getMeta = async (paymentId, paymentType, accountType) =>
-      paymentType==='DOMESTIC' && accountType==='BUSINESS ACCOUNT'
-      ? getPaymentMeta(paymentId, paymentType)
-      : {};
-      // console.log(_getMeta(10, 'DOMESTIC', 'BUSINESS ACCOUNT')); console.log(_getMeta(10, 'INTERNATIONAL', 'BUSINESS ACCOUNT'));
+const _getMeta = async (paymentId, paymentType, accountType) => (
+  paymentType === 'DOMESTIC' && accountType === 'BUSINESS ACCOUNT'
+    ? getPaymentMeta(paymentId, paymentType)
+    : {}
+);
 
 const getPaymentDetailsAsync = async (paymentId, callback = () => {}) => {
   try {
@@ -28,10 +28,11 @@ const getPaymentDetailsAsync = async (paymentId, callback = () => {}) => {
       toAccountDetails,
       chargeAccountDetails,
       paymentTypeDetails,
-      paymentMetaData}));
-  } catch(err) {
+      paymentMetaData
+    }));
+  } catch (err) {
     console.error(err);
   }
-}
+};
 
 export default getPaymentDetailsAsync;
