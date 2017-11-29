@@ -16,10 +16,10 @@ const getPaymentDetailsPromise = (paymentId, callback = () => {}) => {
       _.extend(paymentDetails, payment);
 
       return Promise.all([
-        getAccount(payment.fromAccountId),               // fromAccountDetails
-        getAccount(payment.fromAccountId),               // toAccountDetails
-        getAccount(payment.fromAccountId),               // chargeAccountDetails
-        getPaymentType(payment.paymentType),             // paymentTypeDetails
+        getAccount(payment.fromAccountId),             // fromAccountDetails
+        getAccount(payment.toAccountId),               // toAccountDetails
+        getAccount(payment.chargeAccountId),           // chargeAccountDetails
+        getPaymentType(payment.paymentType),           // paymentTypeDetails
       ]);
     })
     .then(([fromAccountDetails, toAccountDetails, chargeAccountDetails, paymentTypeDetails]) => {

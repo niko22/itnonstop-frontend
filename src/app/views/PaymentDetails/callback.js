@@ -14,11 +14,11 @@ const getPaymentDetailsCallback = (paymentId, callback = () => {}) => {
         _.extend(paymentDetails, { fromAccountDeals });
 
         // toAccountDetails
-        getAccount(paymentDetails.fromAccountId, (toAccountDetails) => {
+        getAccount(paymentDetails.toAccountId, (toAccountDetails) => {
           _.extend(paymentDetails, { toAccountDetails });
 
           // chargeAccountDetails
-          getAccount(paymentDetails.fromAccountId, (chargeAccountDetails) => {
+          getAccount(paymentDetails.chargeAccountId, (chargeAccountDetails) => {
             _.extend(paymentDetails, { chargeAccountDetails });
 
             // paymentTypeDetails
