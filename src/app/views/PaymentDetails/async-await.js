@@ -3,12 +3,6 @@ import { getPayment, getPaymentType, getPaymentMeta } from 'services/payments/pr
 import { getAccount, getAccountDeals } from 'services/accounts/promise';
 
 
-const _getAccountDetails = async (fromAccountId, toAccountId, chargeAccountId) => Promise.all([
-  getAccount(fromAccountId),
-  getAccount(toAccountId),
-  getAccount(chargeAccountId)
-]);
-
 const _getMeta = async (paymentId, paymentType, accountType) => (
   paymentType === 'DOMESTIC' && accountType === 'BUSINESS ACCOUNT'
     ? getPaymentMeta(paymentId, paymentType)
@@ -18,10 +12,15 @@ const _getMeta = async (paymentId, paymentType, accountType) => (
 const getPaymentDetailsAsync = async (paymentId, callback = () => {}) => {
   try {
     const details = await getPayment(paymentId);
-    const [fromAccountDetails, toAccountDetails, chargeAccountDetails] = await _getAccountDetails(details.fromAccountId, details.toAccountId, details.chargeAccountId);
+    const [fromAccountDetails, toAccountDetails, chargeAccountDetails, paymentTypeDetails] = await Promise.all([
+      getAccount(details.fromAccountId),
+      getAccount(details.toAccountId),
+      getAccount(details.chargeAccountId),
+      getPaymentType(details.paymentType)
+    ]);
     const fromAccountDeals = fromAccountDetails.superAccount ? await getAccountDeals(details.fromAccountId) : {};
-    const paymentTypeDetails = await getPaymentType(details.paymentType);
     const paymentMetaData = await _getMeta(paymentId, details.paymentType, fromAccountDetails.accountType);
+
     callback(_.extend(details, {
       fromAccountDetails,
       fromAccountDeals,
@@ -36,3 +35,8 @@ const getPaymentDetailsAsync = async (paymentId, callback = () => {}) => {
 };
 
 export default getPaymentDetailsAsync;
+
+
+
+// console.log(_getMeta(10, 'DOMESTIC', 'BUSINESS ACCOUNT'));
+// console.log(_getMeta(10, 'INTERNATIONAL', 'BUSINESS ACCOUNT'));
