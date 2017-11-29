@@ -8,7 +8,7 @@ import { Link } from 'react-router';
 const renderRow = function (rowData, key) {
   return (
     <tr key={key}>
-      <td><Link to={`/payment/${rowData.paymentId}/details`}>{rowData.paymentId}</Link></td>
+      <td><Link to={`/payments/${rowData.paymentId}/details`}>{rowData.paymentId}</Link></td>
       <td>{rowData.paymentType}</td>
       <td style={{ textAlign: 'right' }}>${rowData.amount.toFixed(2)}</td>
       <td>{rowData.fromAccount}</td>

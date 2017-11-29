@@ -1,4 +1,3 @@
-import _ from 'underscore';
 import { getPayment, getPaymentType, getPaymentMeta } from 'services/payments/promise';
 import { getAccount, getAccountDeals } from 'services/accounts/promise';
 
@@ -21,7 +20,7 @@ const getPaymentDetailsAsync = async (paymentId, callback = () => {}) => {
     const fromAccountDeals = fromAccountDetails.superAccount ? await getAccountDeals(details.fromAccountId) : {};
     const paymentMetaData = await _getMeta(paymentId, details.paymentType, fromAccountDetails.accountType);
 
-    callback(_.extend(details, {
+    callback(Object.assign(details, {
       fromAccountDetails,
       fromAccountDeals,
       toAccountDetails,
@@ -35,7 +34,6 @@ const getPaymentDetailsAsync = async (paymentId, callback = () => {}) => {
 };
 
 export default getPaymentDetailsAsync;
-
 
 
 // console.log(_getMeta(10, 'DOMESTIC', 'BUSINESS ACCOUNT'));

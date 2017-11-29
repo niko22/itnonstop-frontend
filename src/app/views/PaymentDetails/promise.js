@@ -1,4 +1,3 @@
-import _ from 'underscore';
 import { getPayment, getPaymentType, getPaymentMeta } from 'services/payments/promise';
 import { getAccount, getAccountDeals } from 'services/accounts/promise';
 
@@ -13,7 +12,7 @@ const getPaymentDetailsPromise = (paymentId, callback = () => {}) => {
 
   getPayment(paymentId)
     .then((payment) => {
-      _.extend(paymentDetails, payment);
+      Object.assign(paymentDetails, payment);
 
       return Promise.all([
         getAccount(payment.fromAccountId),             // fromAccountDetails
@@ -23,7 +22,7 @@ const getPaymentDetailsPromise = (paymentId, callback = () => {}) => {
       ]);
     })
     .then(([fromAccountDetails, toAccountDetails, chargeAccountDetails, paymentTypeDetails]) => {
-      _.extend(paymentDetails, { fromAccountDetails, toAccountDetails, chargeAccountDetails, paymentTypeDetails });
+      Object.assign(paymentDetails, { fromAccountDetails, toAccountDetails, chargeAccountDetails, paymentTypeDetails });
 
       return Promise.all([
         fromAccountDetails.superAccount ? getAccountDeals(paymentDetails.fromAccountId) : {}, // fromAccountDeals
@@ -31,7 +30,7 @@ const getPaymentDetailsPromise = (paymentId, callback = () => {}) => {
       ]);
     })
     .then(([fromAccountDeals, paymentMetaData]) => callback(
-      _.extend(paymentDetails, { fromAccountDeals, paymentMetaData }))
+      Object.assign(paymentDetails, { fromAccountDeals, paymentMetaData }))
     );
 };
 

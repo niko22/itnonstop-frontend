@@ -20,8 +20,14 @@ export default class App extends Component {
   }
 
   componentWillMount() {
-    const active = _.findIndex(this.state.items, i => `/${i.href}` === location.pathname);
-    if (active) this.setState({ active });
+    const active = _.findIndex(this.state.items, (i) => {
+      const expr = `^/?#/${i.href || '_'}/?(.*)$`;
+      if (location.hash.match(new RegExp(expr))) {
+        return true;
+      }
+      return false;
+    });
+    this.setState({ active: active !== -1 ? active : 0 });
   }
 
   _onSelect(key) {
